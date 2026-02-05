@@ -1,47 +1,58 @@
 # Printer_maintanance
 The system was designed to monitor a fleet of printers (simulated by an external application in C++) and automatically detect service needs. It uses the Random Forest model to classify the condition of the device based on telemetry data (drum wear, fuser temperature, number of paper jams, etc.).
 
-. Instrukcja uruchomienia systemu (Deployment Guide)
-Aby uruchomić pełne środowisko testowe, należy wykonać poniższe kroki w podanej kolejności.
 
-Krok 1: Przygotowanie środowiska Python
-Upewnij się, że masz zainstalowanego Pythona w wersji 3.8 lub nowszej.
+System Deployment Instructions (Deployment Guide)
 
-Instalacja bibliotek: Otwórz terminal w folderze projektu i zainstaluj wymagane zależności:
+To launch the full test environment, follow the steps below in the given order.
 
-Bash
+Step 1: Preparing the Python Environment
+
+Make sure you have Python version 3.8 or newer installed.
+
+Installing libraries: Open a terminal in the project folder and install the required dependencies:
+
 pip install -r requirements.txt
-Uruchomienie serwera Flask: Serwer zainicjalizuje bazę danych printer_system.db oraz strukturę folderów dla modeli przy pierwszym starcie.
 
-Bash
+
+Starting the Flask server: On first startup, the server will initialize the printer_system.db database and the folder structure for models.
+
 python app.py
-Serwer będzie dostępny pod adresem: http://localhost:5000.
 
-Krok 2: Kompilacja i uruchomienie symulatora C++
-Symulator wymaga biblioteki libcurl do wysyłania danych przez HTTP oraz nagłówka json.hpp.
 
-Kompilacja (Linux/GCC):
+The server will be available at: http://localhost:5000
+.
 
-Bash
+Step 2: Compiling and Running the C++ Simulator
+
+The simulator requires the libcurl library to send data over HTTP and the json.hpp header.
+
+Compilation (Linux / GCC):
+
 g++ printer_simulator.cpp -o printer_simulator -lcurl
-Kompilacja (Windows/Visual Studio):
 
-Otwórz plik Printer_maintanance.sln.
 
-Upewnij się, że biblioteka curl jest podlinkowana w ustawieniach projektu.
+Compilation (Windows / Visual Studio):
 
-Zbuduj projekt w trybie Release.
+Open the Printer_maintanance.sln file.
 
-Uruchomienie: W nowym oknie terminala uruchom skompilowany plik:
+Make sure the curl library is linked in the project settings.
 
-Bash
-./printer_simulator  # Linux
-printer_simulator.exe # Windows
-Symulator zacznie generować dane dla 500 drukarek i wysyłać je w paczkach po 50 sztuk do serwera.
+Build the project in Release mode.
 
-Krok 3: Monitoring i Trening ML
-Interfejs WWW: Otwórz przeglądarkę i wejdź na http://localhost:5000. Powinieneś zobaczyć napływające dane w tabeli predykcji.
+Running the simulator: In a new terminal window, run the compiled file:
 
-Automatyczny trening: Po odebraniu 500 rekordów telemetrii, system automatycznie uruchomi proces treningu modelu RandomForest w tle.
+./printer_simulator      # Linux
+printer_simulator.exe    # Windows
 
-Weryfikacja: Logi w konsoli serwera Flask poinformują o pomyślnym wytrenowaniu modelu i jego dokładności (Accuracy).
+
+The simulator will start generating data for 500 printers and send it to the server in batches of 50.
+
+Step 3: Monitoring and ML Training
+
+Web interface: Open a browser and go to http://localhost:5000
+. You should see incoming data displayed in the prediction table.
+
+Automatic training: After receiving 500 telemetry records, the system will automatically start training a RandomForest model in the background.
+
+Verification: Logs in the Flask server console will confirm successful model training and report its accuracy (Accuracy).
